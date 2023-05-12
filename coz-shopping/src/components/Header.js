@@ -5,6 +5,7 @@ import icons from '../lib/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import Dropdown from './Dropdown';
 import { open } from '../modules/menu';
+import { NavLink } from 'react-router-dom';
 
 const Container = styled.header`
   width: 100vw;
@@ -21,6 +22,10 @@ const Container = styled.header`
     cursor: pointer;
     z-index: 10;
   }
+
+  & .noDecoration {
+    text-decoration: none;
+  }
 `;
 
 const LogoWrapper = styled.div`
@@ -34,8 +39,10 @@ const LogoWrapper = styled.div`
   }
 
   & p {
+    color: black;
     font-weight: 700;
     font-size: 32px;
+    text-decoration: none;
   }
 `;
 
@@ -51,10 +58,12 @@ const Header = () => {
   return (
     <>
       <Container>
-        <LogoWrapper>
-          <img src={logo} alt="logo" />
-          <p>COZ Shopping</p>
-        </LogoWrapper>
+        <NavLink to="/" className="noDecoration">
+          <LogoWrapper>
+            <img src={logo} alt="logo" />
+            <p>COZ Shopping</p>
+          </LogoWrapper>
+        </NavLink>
         {icons.hamburger({ className: 'menu-button', onClick: openMenu })}
       </Container>
       {isOpen ? <Dropdown /> : undefined}
