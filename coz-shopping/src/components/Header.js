@@ -2,6 +2,9 @@ import styled from 'styled-components';
 
 import logo from '../img/logo.png';
 import icons from '../lib/icons';
+import { useSelector, useDispatch } from 'react-redux';
+import Dropdown from './Dropdown';
+import { open } from '../modules/menu';
 
 const Container = styled.header`
   width: 100vw;
@@ -37,6 +40,14 @@ const LogoWrapper = styled.div`
 `;
 
 const Header = () => {
+  const { isOpen } = useSelector((state) => state.menu);
+
+  const dispatch = useDispatch();
+
+  const openMenu = () => {
+    dispatch(open(!isOpen));
+  };
+
   return (
     <>
       <Container>
@@ -44,8 +55,9 @@ const Header = () => {
           <img src={logo} alt="logo" />
           <p>COZ Shopping</p>
         </LogoWrapper>
-        {icons.hamburger({ className: 'menu-button' })}
+        {icons.hamburger({ className: 'menu-button', onClick: openMenu })}
       </Container>
+      {isOpen ? <Dropdown /> : undefined}
     </>
   );
 };
