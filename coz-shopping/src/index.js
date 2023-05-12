@@ -5,6 +5,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+
+import menuReducer from './modules/menu';
 
 const GlobalStyle = createGlobalStyle`
 * {
@@ -25,15 +29,22 @@ const theme = {
   },
 };
 
+const rootReducer = combineReducers({
+  menu: menuReducer,
+});
+const store = createStore(rootReducer);
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
+    </Provider>
   </React.StrictMode>
 );
 
