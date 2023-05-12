@@ -13,6 +13,7 @@ const Container = styled.div`
   position: absolute;
   right: 40px;
   top: 70px;
+  z-index: 100;
 
   &::before,
   &::after {
@@ -46,11 +47,10 @@ const Container = styled.div`
 const MenuItem = styled.div`
   width: 200px;
   height: 50px;
-  padding: 13px 10px;
+  padding: 13px 30px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
   font-size: 16px;
   color: ${(props) => props.theme.colors.black};
 
