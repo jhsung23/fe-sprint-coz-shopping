@@ -1,8 +1,10 @@
+import { useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import icons from '../lib/icons';
-import { useSelector } from 'react-redux';
+import { open } from '../modules/menu';
 
 const Container = styled.div`
   width: 200px;
@@ -30,12 +32,12 @@ const Container = styled.div`
 
   &::before {
     bottom: 100%;
-    margin-left: 130px;
+    margin-left: 142px;
   }
 
   &::after {
     bottom: 100%;
-    margin-left: 130px;
+    margin-left: 142px;
     border-bottom-color: #fff;
   }
 
@@ -59,14 +61,45 @@ const MenuItem = styled.div`
   }
 `;
 
-const Dropdown = () => {
+const Dropdown = ({ menuButtonRef }) => {
+  const menuRef = useRef(null);
   const { datas } = useSelector((state) => state.menu);
 
+  const dispatch = useDispatch();
+
+  const closeMenu = useCallback(
+    (e) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(e.target) &&
+        menuButtonRef.current &&
+        !menuButtonRef.current.contains(e.target)
+      ) {
+        dispatch(open(false));
+      }
+    },
+    [dispatch, menuButtonRef]
+  );
+
+  useEffect(() => {
+    document.addEventListener('click', closeMenu, true);
+    return () => {
+      document.addEventListener('click', closeMenu, true);
+    };
+  }, [closeMenu]);
+
   return (
-    <Container>
+    <Container ref={menuRef}>
       <MenuItem>OOO님, 안녕하세요!</MenuItem>
       {datas.map((data) => (
-        <NavLink key={data.id} to={data.to} className="noDecoration">
+        <NavLink
+          key={data.id}
+          to={data.to}
+          className="noDecoration"
+          onClick={() => {
+            dispatch(open(false));
+          }}
+        >
           <MenuItem className="hasLine">
             {icons[data.icon]}&nbsp;{data.name}
           </MenuItem>

@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import styled from 'styled-components';
 
 import logo from '../img/logo.png';
@@ -15,13 +16,6 @@ const Container = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: 0 76px;
-
-  & .menu-button {
-    width: 50px;
-    height: 30px;
-    cursor: pointer;
-    z-index: 10;
-  }
 
   & .noDecoration {
     text-decoration: none;
@@ -46,7 +40,15 @@ const LogoWrapper = styled.div`
   }
 `;
 
+const IconWrapper = styled.span`
+  z-index: 101;
+  font-size: 1.7rem;
+  cursor: pointer;
+  line-height: 50%;
+`;
+
 const Header = () => {
+  const menuButtonRef = useRef(null);
   const { isOpen } = useSelector((state) => state.menu);
 
   const dispatch = useDispatch();
@@ -64,9 +66,11 @@ const Header = () => {
             <p>COZ Shopping</p>
           </LogoWrapper>
         </NavLink>
-        {icons.hamburger({ className: 'menu-button', onClick: openMenu })}
+        <IconWrapper className="menu-button" onClick={openMenu} ref={menuButtonRef}>
+          {icons.hamburger()}
+        </IconWrapper>
       </Container>
-      {isOpen ? <Dropdown /> : undefined}
+      {isOpen ? <Dropdown menuButtonRef={menuButtonRef} /> : undefined}
     </>
   );
 };
