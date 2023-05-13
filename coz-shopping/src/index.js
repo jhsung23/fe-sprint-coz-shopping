@@ -3,20 +3,13 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 
 import menuReducer from './modules/menu';
-
-const GlobalStyle = createGlobalStyle`
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-`;
+import GlobalStyle from './components/GlobalStyle';
 
 const theme = {
   colors: {
