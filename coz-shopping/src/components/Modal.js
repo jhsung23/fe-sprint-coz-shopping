@@ -1,7 +1,9 @@
 import { useRef } from 'react';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
 
 import icons from '../lib/icons';
+import { toggle } from '../modules/bookmark';
 
 const ModalLayer = styled.div`
   width: 100vw;
@@ -67,8 +69,15 @@ const Title = styled.span`
   line-height: 1.5px;
 `;
 
-const Modal = ({ titleLeft, imageUrl, setIsModalOpen }) => {
+const Modal = ({ titleLeft, id, imageUrl, setIsModalOpen }) => {
   const layerRef = useRef(null);
+
+  const { itemsId } = useSelector((state) => state.bookmark);
+  const dispatch = useDispatch();
+
+  const toggleBookmark = () => {
+    dispatch(toggle(id));
+  };
 
   const closeModal = (e) => {
     if (e.target === layerRef.current) {
@@ -88,8 +97,9 @@ const Modal = ({ titleLeft, imageUrl, setIsModalOpen }) => {
           {icons.close}
         </CloseButton>
         <BottomContentWrapper>
-          {/* TODO : 북마크 기능 */}
-          <StarButton bookmarked="false">{icons.filledStar}</StarButton>
+          <StarButton bookmarked={itemsId.includes(id) ? 'true' : 'false'} onClick={toggleBookmark}>
+            {icons.filledStar}
+          </StarButton>
           <Title>{titleLeft}</Title>
         </BottomContentWrapper>
       </Container>

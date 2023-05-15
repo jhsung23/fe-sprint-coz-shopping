@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
 
 import icons from '../lib/icons';
 import Modal from './Modal';
+import { toggle } from '../modules/bookmark';
 
 const Container = styled.div`
   height: 264px;
@@ -55,6 +57,7 @@ const SubtitleWrapper = styled.div`
 `;
 
 const Item = ({
+  id,
   type,
   title,
   sub_title,
@@ -71,6 +74,12 @@ const Item = ({
   let imageUrl = image_url;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { itemsId } = useSelector((state) => state.bookmark);
+  const dispatch = useDispatch();
+
+  const toggleBookmark = () => {
+    dispatch(toggle(id));
+  };
 
   if (type === 'Product') {
     titleRight = `${discountPercentage}%`;
@@ -92,8 +101,9 @@ const Item = ({
       >
         <ImageWrapper>
           <img src={imageUrl} alt="img" />
-          {/* TODO : 북마크 기능 */}
-          <StarButton bookmarked="true">{icons.filledStar}</StarButton>
+          <StarButton bookmarked={itemsId.includes(id) ? 'true' : 'false'} onClick={toggleBookmark}>
+            {icons.filledStar}
+          </StarButton>
         </ImageWrapper>
         <TitleWrapper type={type}>
           <p>
@@ -105,7 +115,7 @@ const Item = ({
         <SubtitleWrapper type={type}>{subtitle}</SubtitleWrapper>
       </Container>
       {isModalOpen ? (
-        <Modal titleLeft={titleLeft} imageUrl={imageUrl} setIsModalOpen={setIsModalOpen} />
+        <Modal titleLeft={titleLeft} id={id} imageUrl={imageUrl} setIsModalOpen={setIsModalOpen} />
       ) : undefined}
     </>
   );

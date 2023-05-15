@@ -7,8 +7,12 @@ import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
+import { persistStore, persistReducer } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
+import storage from 'redux-persist/lib/storage';
 
 import menuReducer from './modules/menu';
+import bookmarkReducer from './modules/bookmark';
 import GlobalStyle from './components/GlobalStyle';
 
 const theme = {
@@ -22,21 +26,31 @@ const theme = {
   },
 };
 
+const persistConfig = {
+  key: 'bookmark',
+  storage,
+  whitelist: ['bookmark'],
+};
 const rootReducer = combineReducers({
   menu: menuReducer,
+  bookmark: bookmarkReducer,
 });
-const store = createStore(rootReducer);
+
+const store = createStore(persistReducer(persistConfig, rootReducer));
+const persistor = persistStore(store);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ThemeProvider>
+      <PersistGate persistor={persistor}>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ThemeProvider>
+      </PersistGate>
     </Provider>
   </React.StrictMode>
 );

@@ -16,6 +16,9 @@ const initialData = {
       },
     ],
   },
+  bookmark: {
+    itemsId: [],
+  },
 };
 
 export default initialData;
