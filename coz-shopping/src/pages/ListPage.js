@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import FilterContainer from '../components/FilterContainer';
 import Item from '../components/Item';
 import ItemSkeleton from '../components/ItemSkeleton';
+import EmptyList from '../components/EmptyList';
 
 const LIMIT = 20;
 
@@ -48,6 +49,36 @@ const ListPage = ({ title }) => {
     setVisibleCount((prevState) => prevState + LIMIT);
   }, []);
 
+  const updateUI = () => {
+    const filteredData =
+      title === 'itemList'
+        ? datas
+            .slice(0, visibleCount)
+            .filter((data) => selectedType === '' || data.type === selectedType)
+        : datas
+            .filter(
+              (data) =>
+                (selectedType === '' || data.type === selectedType) && itemsId.includes(data.id)
+            )
+            .slice(0, visibleCount);
+
+    if (filteredData.length) {
+      return (
+        <ItemContainer>
+          {filteredData.map((data) => (
+            <Item key={data.id} {...data} />
+          ))}
+        </ItemContainer>
+      );
+    }
+
+    return title === 'itemList' ? (
+      <EmptyList listName="item" width={300} height={300} />
+    ) : (
+      <EmptyList listName="bookmark" width={200} height={200} />
+    );
+  };
+
   useEffect(() => {
     fetchInitialData();
   }, []);
@@ -61,24 +92,15 @@ const ListPage = ({ title }) => {
   return (
     <Container>
       <FilterContainer selectedType={selectedType} setSelectedType={setSelectedType} />
-      <ItemContainer>
-        {isLoading
-          ? Array.from({ length: 16 }, () => undefined).map((data, idx) => (
-              <ItemSkeleton key={idx} />
-            ))
-          : title === 'itemList'
-          ? datas
-              .slice(0, visibleCount)
-              .filter((data) => selectedType === '' || data.type === selectedType)
-              .map((data) => <Item key={data.id} {...data} />)
-          : datas
-              .filter(
-                (data) =>
-                  (selectedType === '' || data.type === selectedType) && itemsId.includes(data.id)
-              )
-              .slice(0, visibleCount)
-              .map((data) => <Item key={data.id} {...data} />)}
-      </ItemContainer>
+      {isLoading ? (
+        <ItemContainer>
+          {Array.from({ length: 16 }, () => undefined).map((data, idx) => (
+            <ItemSkeleton key={idx} />
+          ))}
+        </ItemContainer>
+      ) : (
+        updateUI()
+      )}
       <div ref={ref} />
     </Container>
   );
