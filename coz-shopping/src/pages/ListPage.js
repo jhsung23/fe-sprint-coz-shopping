@@ -22,6 +22,7 @@ const ItemContainer = styled.div`
   grid-template-columns: repeat(4, 1fr);
   column-gap: 24px;
   row-gap: 12px;
+  margin-bottom: 200px;
 `;
 
 const ListPage = ({ title }) => {
