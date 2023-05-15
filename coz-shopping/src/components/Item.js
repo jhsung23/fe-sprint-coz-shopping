@@ -43,6 +43,7 @@ const TitleWrapper = styled.div`
   margin-top: 6px;
   font-weight: 800;
   font-size: 16px;
+  cursor: pointer;
 
   & :nth-child(2) {
     color: ${(props) => (props.type === 'Product' ? props.theme.colors.purple : 'black')};
@@ -54,6 +55,7 @@ const SubtitleWrapper = styled.div`
   font-size: 16px;
   font-weight: 400;
   text-align: ${(props) => (props.type === 'Exhibition' ? 'start' : 'end')};
+  cursor: pointer;
 `;
 
 const Item = ({
@@ -94,25 +96,33 @@ const Item = ({
 
   return (
     <>
-      <Container
-        onClick={() => {
-          setIsModalOpen(true);
-        }}
-      >
+      <Container>
         <ImageWrapper>
-          <img src={imageUrl} alt="img" />
+          <img
+            src={imageUrl}
+            alt="img"
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
+          />
           <StarButton bookmarked={itemsId.includes(id) ? 'true' : 'false'} onClick={toggleBookmark}>
             {icons.filledStar}
           </StarButton>
         </ImageWrapper>
-        <TitleWrapper type={type}>
-          <p>
-            {type === 'Category' && '# '}
-            {titleLeft}
-          </p>
-          <p>{titleRight}</p>
-        </TitleWrapper>
-        <SubtitleWrapper type={type}>{subtitle}</SubtitleWrapper>
+        <div
+          onClick={() => {
+            setIsModalOpen(true);
+          }}
+        >
+          <TitleWrapper type={type}>
+            <p>
+              {type === 'Category' && '# '}
+              {titleLeft}
+            </p>
+            <p>{titleRight}</p>
+          </TitleWrapper>
+          <SubtitleWrapper type={type}>{subtitle}</SubtitleWrapper>
+        </div>
       </Container>
       {isModalOpen ? (
         <Modal titleLeft={titleLeft} id={id} imageUrl={imageUrl} setIsModalOpen={setIsModalOpen} />
