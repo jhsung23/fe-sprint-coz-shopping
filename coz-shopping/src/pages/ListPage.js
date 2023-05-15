@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useInView } from 'react-intersection-observer';
+import { useSelector } from 'react-redux';
 
 import FilterContainer from '../components/FilterContainer';
 import Item from '../components/Item';
@@ -23,12 +24,14 @@ const ItemContainer = styled.div`
   row-gap: 12px;
 `;
 
-const ListPage = () => {
+const ListPage = ({ title }) => {
   const [datas, setDatas] = useState([]);
   const [visibleCount, setVisibleCount] = useState(LIMIT);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedType, setSelectedType] = useState('');
   const [ref, inView] = useInView();
+
+  const { itemsId } = useSelector((state) => state.bookmark);
 
   const fetchInitialData = () => {
     setIsLoading(true);
@@ -62,9 +65,17 @@ const ListPage = () => {
           ? Array.from({ length: 16 }, () => undefined).map((data, idx) => (
               <ItemSkeleton key={idx} />
             ))
-          : datas
+          : title === 'itemList'
+          ? datas
               .slice(0, visibleCount)
               .filter((data) => selectedType === '' || data.type === selectedType)
+              .map((data) => <Item key={data.id} {...data} />)
+          : datas
+              .filter(
+                (data) =>
+                  (selectedType === '' || data.type === selectedType) && itemsId.includes(data.id)
+              )
+              .slice(0, visibleCount)
               .map((data) => <Item key={data.id} {...data} />)}
       </ItemContainer>
       <div ref={ref} />
