@@ -11,6 +11,7 @@ const Container = styled.footer`
   border-color: #00000010;
   font-size: 12px;
   color: ${(props) => props.theme.colors.lightgrey};
+  margin-top: auto;
 
   & :first-child {
     margin-bottom: 2px;
