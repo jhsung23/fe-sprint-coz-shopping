@@ -13,6 +13,7 @@ import storage from 'redux-persist/lib/storage';
 
 import menuReducer from './modules/menu';
 import bookmarkReducer from './modules/bookmark';
+import filterReducer from './modules/filter';
 import GlobalStyle from './components/GlobalStyle';
 
 const theme = {
@@ -34,6 +35,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   menu: menuReducer,
   bookmark: bookmarkReducer,
+  filter: filterReducer,
 });
 
 const store = createStore(persistReducer(persistConfig, rootReducer));
