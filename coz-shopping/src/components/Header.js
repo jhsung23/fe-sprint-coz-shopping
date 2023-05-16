@@ -10,7 +10,7 @@ import { NavLink } from 'react-router-dom';
 
 const Container = styled.header`
   width: 100vw;
-  height: 80px;
+  min-height: 80px;
   box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-between;

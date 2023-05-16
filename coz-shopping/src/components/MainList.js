@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 
 import Item from './Item';
 import ItemSkeleton from './ItemSkeleton';
+import EmptyList from './EmptyList';
 
 const MAX_COUNT = 4;
 
@@ -29,26 +30,42 @@ const List = styled.div`
 const MainList = ({ isLoading, title, datas }) => {
   const { itemsId } = useSelector((state) => state.bookmark);
 
+  const updateUI = () => {
+    const filteredData =
+      title === '북마크 리스트'
+        ? datas.filter((data) => itemsId.includes(data.id)).slice(0, MAX_COUNT)
+        : datas.slice(0, MAX_COUNT);
+
+    if (filteredData.length) {
+      return (
+        <List>
+          {filteredData.map((item) => (
+            <Item key={item.id} {...item} />
+          ))}
+        </List>
+      );
+    }
+
+    return title === '북마크 리스트' ? (
+      <EmptyList listName="bookmark" width={140} height={120} background />
+    ) : (
+      <EmptyList listName="item" width={190} height={110} background />
+    );
+  };
+
   return (
     <Container>
       <Title>{title}</Title>
-      <List>
-        {isLoading ? (
-          <>
-            <ItemSkeleton />
-            <ItemSkeleton />
-            <ItemSkeleton />
-            <ItemSkeleton />
-          </>
-        ) : title === '북마크 리스트' ? (
-          datas
-            .filter((data) => itemsId.includes(data.id))
-            .slice(0, MAX_COUNT)
-            .map((item) => <Item key={item.id} {...item} />)
-        ) : (
-          datas.slice(0, MAX_COUNT).map((item) => <Item key={item.id} {...item} />)
-        )}
-      </List>
+      {isLoading ? (
+        <List>
+          <ItemSkeleton />
+          <ItemSkeleton />
+          <ItemSkeleton />
+          <ItemSkeleton />
+        </List>
+      ) : (
+        updateUI()
+      )}
     </Container>
   );
 };
