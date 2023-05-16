@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useInView } from 'react-intersection-observer';
@@ -73,7 +74,7 @@ const ListPage = ({ title }) => {
     }
 
     return title === 'itemList' ? (
-      <EmptyList listName="item" width={300} height={300} />
+      <EmptyList listName="item" width={300} height={200} />
     ) : (
       <EmptyList listName="bookmark" width={200} height={200} />
     );
