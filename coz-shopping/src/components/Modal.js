@@ -1,9 +1,11 @@
 import { useRef } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { v4 as uuid } from 'uuid';
 
 import icons from '../lib/icons';
 import { toggle } from '../modules/bookmark';
+import { alertAsync } from '../modules/toast';
 
 const ModalLayer = styled.div`
   width: 100vw;
@@ -77,6 +79,12 @@ const Modal = ({ titleLeft, id, imageUrl, setIsModalOpen }) => {
 
   const toggleBookmark = () => {
     dispatch(toggle(id));
+
+    if (itemsId.includes(id)) {
+      alertAsync(uuid(), 'unbookmark')(dispatch);
+    } else {
+      alertAsync(uuid(), 'bookmark')(dispatch);
+    }
   };
 
   const closeModal = (e) => {

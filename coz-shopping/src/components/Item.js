@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { v4 as uuid } from 'uuid';
 
 import icons from '../lib/icons';
 import Modal from './Modal';
 import { toggle } from '../modules/bookmark';
+import { alertAsync } from '../modules/toast';
 
 const Container = styled.div`
   height: 264px;
@@ -81,6 +83,12 @@ const Item = ({
 
   const toggleBookmark = () => {
     dispatch(toggle(id));
+
+    if (itemsId.includes(id)) {
+      alertAsync(uuid(), 'unbookmark')(dispatch);
+    } else {
+      alertAsync(uuid(), 'bookmark')(dispatch);
+    }
   };
 
   if (type === 'Product') {

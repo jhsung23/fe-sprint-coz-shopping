@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useInView } from 'react-intersection-observer';
@@ -9,6 +8,7 @@ import FilterContainer from '../components/FilterContainer';
 import Item from '../components/Item';
 import ItemSkeleton from '../components/ItemSkeleton';
 import EmptyList from '../components/EmptyList';
+import ToastContainer from '../components/ToastContainer';
 
 const LIMIT = 20;
 const SKELETON_COUNT = 16;
@@ -36,6 +36,7 @@ const ListPage = ({ title }) => {
   const [ref, inView] = useInView();
 
   const { itemsId } = useSelector((state) => state.bookmark);
+  const { items } = useSelector((state) => state.toast);
 
   const fetchInitialData = () => {
     setIsLoading(true);
@@ -104,6 +105,7 @@ const ListPage = ({ title }) => {
         updateUI()
       )}
       <div ref={ref} />
+      {items && <ToastContainer items={items} />}
     </Container>
   );
 };

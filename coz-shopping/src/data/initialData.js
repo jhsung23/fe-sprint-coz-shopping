@@ -28,6 +28,9 @@ const initialData = {
       { id: 5, tag: '브랜드', image: 'filter-brand.png', type: 'Brand' },
     ],
   },
+  toast: {
+    items: [],
+  },
 };
 
 export default initialData;
