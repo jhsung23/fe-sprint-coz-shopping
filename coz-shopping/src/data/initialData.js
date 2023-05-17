@@ -31,6 +31,10 @@ const initialData = {
   toast: {
     items: [],
   },
+  modal: {
+    isOpen: false,
+    content: {},
+  },
 };
 
 export default initialData;

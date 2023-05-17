@@ -1,12 +1,11 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 
 import icons from '../lib/icons';
-import Modal from './Modal';
 import { toggle } from '../modules/bookmark';
 import { alertAsync } from '../modules/toast';
+import { open } from '../modules/modal';
 
 const Container = styled.div`
   height: 264px;
@@ -77,7 +76,6 @@ const Item = ({
   let subtitle = '';
   let imageUrl = image_url;
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const { itemsId } = useSelector((state) => state.bookmark);
   const dispatch = useDispatch();
 
@@ -110,7 +108,7 @@ const Item = ({
             src={imageUrl}
             alt="img"
             onClick={() => {
-              setIsModalOpen(true);
+              dispatch(open(id, titleLeft, imageUrl));
             }}
           />
           <StarButton bookmarked={itemsId.includes(id) ? 'true' : 'false'} onClick={toggleBookmark}>
@@ -119,7 +117,7 @@ const Item = ({
         </ImageWrapper>
         <div
           onClick={() => {
-            setIsModalOpen(true);
+            dispatch(open(id, titleLeft, imageUrl));
           }}
         >
           <TitleWrapper type={type}>
@@ -132,9 +130,6 @@ const Item = ({
           <SubtitleWrapper type={type}>{subtitle}</SubtitleWrapper>
         </div>
       </Container>
-      {isModalOpen ? (
-        <Modal titleLeft={titleLeft} id={id} imageUrl={imageUrl} setIsModalOpen={setIsModalOpen} />
-      ) : undefined}
     </>
   );
 };

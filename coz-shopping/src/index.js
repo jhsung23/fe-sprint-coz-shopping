@@ -16,6 +16,7 @@ import menuReducer from './modules/menu';
 import bookmarkReducer from './modules/bookmark';
 import filterReducer from './modules/filter';
 import toastReducer from './modules/toast';
+import modalReducer from './modules/modal';
 import GlobalStyle from './components/GlobalStyle';
 
 const theme = {
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
   bookmark: bookmarkReducer,
   filter: filterReducer,
   toast: toastReducer,
+  modal: modalReducer,
 });
 
 const store = createStore(persistReducer(persistConfig, rootReducer), applyMiddleware(thunk));
