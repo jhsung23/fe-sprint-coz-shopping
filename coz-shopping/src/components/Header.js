@@ -49,12 +49,12 @@ const IconWrapper = styled.span`
 
 const Header = () => {
   const menuButtonRef = useRef(null);
-  const { isOpen } = useSelector((state) => state.menu);
+  const { menu } = useSelector((state) => state);
 
   const dispatch = useDispatch();
 
   const openMenu = () => {
-    dispatch(open(!isOpen));
+    dispatch(open(!menu.isOpen));
   };
 
   return (
@@ -70,7 +70,7 @@ const Header = () => {
           {icons.hamburger()}
         </IconWrapper>
       </Container>
-      {isOpen ? <Dropdown menuButtonRef={menuButtonRef} /> : undefined}
+      {menu.isOpen ? <Dropdown menuButtonRef={menuButtonRef} /> : undefined}
     </>
   );
 };
