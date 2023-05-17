@@ -70,7 +70,7 @@ const Item = ({
   brand_image_url,
   follower,
 }) => {
-  let titleLeft = title || brand_name;
+  const titleLeft = title || brand_name;
   let titleRight = '';
   let subtitle = '';
   let imageUrl = image_url;
