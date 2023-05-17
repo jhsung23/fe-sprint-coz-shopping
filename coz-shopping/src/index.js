@@ -3,16 +3,18 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+import { persistStore, persistReducer } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
+import storage from 'redux-persist/lib/storage';
 
-const GlobalStyle = createGlobalStyle`
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-`;
+import menuReducer from './modules/menu';
+import bookmarkReducer from './modules/bookmark';
+import filterReducer from './modules/filter';
+import GlobalStyle from './components/GlobalStyle';
 
 const theme = {
   colors: {
@@ -25,15 +27,33 @@ const theme = {
   },
 };
 
+const persistConfig = {
+  key: 'bookmark',
+  storage,
+  whitelist: ['bookmark'],
+};
+const rootReducer = combineReducers({
+  menu: menuReducer,
+  bookmark: bookmarkReducer,
+  filter: filterReducer,
+});
+
+const store = createStore(persistReducer(persistConfig, rootReducer));
+const persistor = persistStore(store);
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ThemeProvider>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ThemeProvider>
+      </PersistGate>
+    </Provider>
   </React.StrictMode>
 );
 
