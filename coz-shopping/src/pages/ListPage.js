@@ -9,6 +9,7 @@ import Item from '../components/Item';
 import ItemSkeleton from '../components/ItemSkeleton';
 import EmptyList from '../components/EmptyList';
 import ToastContainer from '../components/ToastContainer';
+import Modal from '../components/Modal';
 
 const LIMIT = 20;
 const SKELETON_COUNT = 16;
@@ -37,6 +38,7 @@ const ListPage = ({ title }) => {
 
   const { itemsId } = useSelector((state) => state.bookmark);
   const { items } = useSelector((state) => state.toast);
+  const { modal } = useSelector((state) => state);
 
   const fetchInitialData = () => {
     setIsLoading(true);
@@ -106,6 +108,7 @@ const ListPage = ({ title }) => {
       )}
       <div ref={ref} />
       {items && <ToastContainer items={items} />}
+      {modal.isOpen && <Modal {...modal.content} />}
     </Container>
   );
 };
