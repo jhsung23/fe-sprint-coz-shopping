@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 import MainList from '../components/MainList';
+import ToastContainer from '../components/ToastContainer';
 
 const Container = styled.main`
   display: flex;
@@ -15,6 +17,8 @@ const Container = styled.main`
 const MainPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [datas, setDatas] = useState([]);
+
+  const { items } = useSelector((state) => state.toast);
 
   useEffect(() => {
     setIsLoading(true);
@@ -30,6 +34,7 @@ const MainPage = () => {
     <Container>
       <MainList isLoading={isLoading} title="상품 리스트" datas={datas} />
       <MainList isLoading={isLoading} title="북마크 리스트" datas={datas} />
+      {items && <ToastContainer items={items} />}
     </Container>
   );
 };
