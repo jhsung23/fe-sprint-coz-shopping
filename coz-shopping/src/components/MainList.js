@@ -6,6 +6,7 @@ import ItemSkeleton from './ItemSkeleton';
 import EmptyList from './EmptyList';
 
 const MAX_COUNT = 4;
+const SKELETON_COUNT = 4;
 
 const Container = styled.section`
   height: 320px;
@@ -58,10 +59,9 @@ const MainList = ({ isLoading, title, datas }) => {
       <Title>{title}</Title>
       {isLoading ? (
         <List>
-          <ItemSkeleton />
-          <ItemSkeleton />
-          <ItemSkeleton />
-          <ItemSkeleton />
+          {Array.from({ length: SKELETON_COUNT }).map((_, idx) => (
+            <ItemSkeleton key={idx} />
+          ))}
         </List>
       ) : (
         updateUI()

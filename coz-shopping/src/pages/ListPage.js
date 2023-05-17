@@ -11,6 +11,7 @@ import ItemSkeleton from '../components/ItemSkeleton';
 import EmptyList from '../components/EmptyList';
 
 const LIMIT = 20;
+const SKELETON_COUNT = 16;
 
 const Container = styled.div`
   display: flex;
@@ -95,7 +96,7 @@ const ListPage = ({ title }) => {
       <FilterContainer selectedType={selectedType} setSelectedType={setSelectedType} />
       {isLoading ? (
         <ItemContainer>
-          {Array.from({ length: 16 }, () => undefined).map((data, idx) => (
+          {Array.from({ length: SKELETON_COUNT }).map((_, idx) => (
             <ItemSkeleton key={idx} />
           ))}
         </ItemContainer>
