@@ -48,7 +48,7 @@ const ListPage = ({ title }) => {
   const fetchInitialData = () => {
     setIsLoading(true);
     axios
-      .get(SERVER_URL + '23')
+      .get(SERVER_URL)
       .then((res) => {
         setDatas(res.data);
         setTimeout(() => {
