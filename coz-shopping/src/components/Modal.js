@@ -7,6 +7,7 @@ import icons from '../lib/icons';
 import { toggle } from '../modules/bookmark';
 import { alertAsync } from '../modules/toast';
 import { close } from '../modules/modal';
+import { TOAST } from '../lib/constants';
 
 const ModalLayer = styled.div`
   width: 100vw;
@@ -82,9 +83,9 @@ const Modal = ({ id, titleLeft, imageUrl }) => {
     dispatch(toggle(id));
 
     if (itemsId.includes(id)) {
-      alertAsync(uuid(), 'unbookmark')(dispatch);
+      alertAsync(uuid(), TOAST.DISMISS_ACTION)(dispatch);
     } else {
-      alertAsync(uuid(), 'bookmark')(dispatch);
+      alertAsync(uuid(), TOAST.ALERT_ACTION)(dispatch);
     }
   };
 

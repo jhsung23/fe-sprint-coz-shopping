@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import Item from './Item';
 import ItemSkeleton from './ItemSkeleton';
 import EmptyList from './EmptyList';
+import { MAIN_LIST } from '../lib/constants';
 
 const MAX_COUNT = 4;
 const SKELETON_COUNT = 4;
@@ -33,7 +34,7 @@ const MainList = ({ isLoading, title, datas }) => {
 
   const updateUI = () => {
     const filteredData =
-      title === '북마크 리스트'
+      title === MAIN_LIST.BOOKMARK
         ? datas.filter((data) => itemsId.includes(data.id)).slice(0, MAX_COUNT)
         : datas.slice(0, MAX_COUNT);
 
@@ -47,10 +48,10 @@ const MainList = ({ isLoading, title, datas }) => {
       );
     }
 
-    return title === '북마크 리스트' ? (
-      <EmptyList listName="bookmark" width={140} height={120} background />
+    return title === MAIN_LIST.BOOKMARK ? (
+      <EmptyList listName={MAIN_LIST.BOOKMARK} width={140} height={120} background />
     ) : (
-      <EmptyList listName="item" width={190} height={110} background />
+      <EmptyList listName={MAIN_LIST.ITEM} width={190} height={110} background />
     );
   };
 

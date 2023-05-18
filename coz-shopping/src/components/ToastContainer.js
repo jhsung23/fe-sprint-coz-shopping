@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import Toast from './Toast';
+import { TOAST } from '../lib/constants';
 
 const Conatiner = styled.div`
   width: 353px;
@@ -24,19 +25,19 @@ const ToastContainer = ({ items }) => {
   return (
     <Conatiner>
       {items.map((item) =>
-        item.actionType === 'bookmark' ? (
+        item.actionType === TOAST.ALERT_ACTION ? (
           <Toast
             key={item.id}
             id={item.id}
             actionType={item.actionType}
-            message="상품이 북마크에 추가되었습니다."
+            message={TOAST.ALERT_MESSAGE}
           />
         ) : (
           <Toast
             key={item.id}
             id={item.id}
             actionType={item.actionType}
-            message="상품이 북마크에서 제거되었습니다."
+            message={TOAST.DISMISS_MESSAGE}
           />
         )
       )}

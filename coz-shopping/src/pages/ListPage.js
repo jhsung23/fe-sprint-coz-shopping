@@ -11,9 +11,11 @@ import EmptyList from '../components/EmptyList';
 import ToastContainer from '../components/ToastContainer';
 import Modal from '../components/Modal';
 import FetchError from '../components/FetchError';
+import { MAIN_LIST, MENU } from '../lib/constants';
 
 const LIMIT = 20;
 const SKELETON_COUNT = 16;
+const SERVER_URL = 'http://cozshopping.codestates-seb.link/api/v1/products';
 
 const Container = styled.div`
   display: flex;
@@ -39,14 +41,14 @@ const ListPage = ({ title }) => {
 
   const [ref, inView] = useInView();
 
-  const { itemsId } = useSelector((state) => state.bookmark);
-  const { items } = useSelector((state) => state.toast);
+  const { bookmark } = useSelector((state) => state);
+  const { toast } = useSelector((state) => state);
   const { modal } = useSelector((state) => state);
 
   const fetchInitialData = () => {
     setIsLoading(true);
     axios
-      .get('http://cozshopping.codestates-seb.link/api/v1/products')
+      .get(SERVER_URL + '23')
       .then((res) => {
         setDatas(res.data);
         setTimeout(() => {
@@ -65,14 +67,15 @@ const ListPage = ({ title }) => {
 
   const updateUI = () => {
     const filteredData =
-      title === 'itemList'
+      title === MENU.ITEM_PAGE
         ? datas
             .slice(0, visibleCount)
             .filter((data) => selectedType === '' || data.type === selectedType)
         : datas
             .filter(
               (data) =>
-                (selectedType === '' || data.type === selectedType) && itemsId.includes(data.id)
+                (selectedType === '' || data.type === selectedType) &&
+                bookmark.itemsId.includes(data.id)
             )
             .slice(0, visibleCount);
 
@@ -86,10 +89,10 @@ const ListPage = ({ title }) => {
       );
     }
 
-    return title === 'itemList' ? (
-      <EmptyList listName="item" width={300} height={200} />
+    return title === MENU.ITEM_PAGE ? (
+      <EmptyList listName={MAIN_LIST.ITEM} width={300} height={200} />
     ) : (
-      <EmptyList listName="bookmark" width={200} height={200} />
+      <EmptyList listName={MAIN_LIST.BOOKMARK} width={200} height={200} />
     );
   };
 
@@ -120,7 +123,7 @@ const ListPage = ({ title }) => {
             updateUI()
           )}
           <div ref={ref} />
-          {items && <ToastContainer items={items} />}
+          {toast.items && <ToastContainer items={toast.items} />}
           {modal.isOpen && <Modal {...modal.content} />}
         </>
       )}

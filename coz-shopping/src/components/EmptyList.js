@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import { ReactComponent as EmptyItemListSvg } from '../img/emptyItemList.svg';
 import { ReactComponent as EmptyBookmarkListSvg } from '../img/emptyBookmarkList.svg';
+import { EMPTY_LIST_MESSAGE, MAIN_LIST } from '../lib/constants';
 
 const Container = styled.div`
   display: flex;
@@ -26,15 +27,15 @@ const Container = styled.div`
 const EmptyList = ({ listName, width, height, background }) => {
   return (
     <Container className={background ? 'background' : ''}>
-      {listName === 'item' ? (
+      {listName === MAIN_LIST.ITEM ? (
         <>
           <EmptyItemListSvg width={width} height={height} />
-          <p>끙차! 상품 준비중입니다.</p>
+          <p>{EMPTY_LIST_MESSAGE.ITEM}</p>
         </>
       ) : (
         <>
           <EmptyBookmarkListSvg width={width} height={height} />
-          <p>이런! 북마크한 아이템이 없네요.</p>
+          <p>{EMPTY_LIST_MESSAGE.BOOKMARK}</p>
         </>
       )}
     </Container>

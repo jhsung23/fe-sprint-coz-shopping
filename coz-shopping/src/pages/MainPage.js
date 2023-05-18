@@ -7,6 +7,9 @@ import MainList from '../components/MainList';
 import ToastContainer from '../components/ToastContainer';
 import Modal from '../components/Modal';
 import FetchError from '../components/FetchError';
+import { MAIN_LIST } from '../lib/constants';
+
+const SERVER_URL = 'http://cozshopping.codestates-seb.link/api/v1/products';
 
 const Container = styled.main`
   display: flex;
@@ -21,13 +24,13 @@ const MainPage = () => {
   const [datas, setDatas] = useState([]);
   const [error, setError] = useState(false);
 
-  const { items } = useSelector((state) => state.toast);
+  const { toast } = useSelector((state) => state);
   const { modal } = useSelector((state) => state);
 
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get('http://cozshopping.codestates-seb.link/api/v1/products')
+      .get(SERVER_URL)
       .then((res) => {
         setDatas(res.data);
         setTimeout(() => {
@@ -46,9 +49,9 @@ const MainPage = () => {
         <FetchError />
       ) : (
         <>
-          <MainList isLoading={isLoading} title="상품 리스트" datas={datas} />
-          <MainList isLoading={isLoading} title="북마크 리스트" datas={datas} />
-          {items && <ToastContainer items={items} />}
+          <MainList isLoading={isLoading} title={MAIN_LIST.ITEM} datas={datas} />
+          <MainList isLoading={isLoading} title={MAIN_LIST.BOOKMARK} datas={datas} />
+          {toast.items && <ToastContainer items={toast.items} />}
           {modal.isOpen && <Modal {...modal.content} />}
         </>
       )}
