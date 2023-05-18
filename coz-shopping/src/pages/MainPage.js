@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import MainList from '../components/MainList';
 import ToastContainer from '../components/ToastContainer';
 import Modal from '../components/Modal';
+import FetchError from '../components/FetchError';
 
 const Container = styled.main`
   display: flex;
@@ -18,26 +19,39 @@ const Container = styled.main`
 const MainPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [datas, setDatas] = useState([]);
+  const [error, setError] = useState(false);
 
   const { items } = useSelector((state) => state.toast);
   const { modal } = useSelector((state) => state);
 
   useEffect(() => {
     setIsLoading(true);
-    axios.get('http://cozshopping.codestates-seb.link/api/v1/products').then((res) => {
-      setDatas(res.data);
-      setTimeout(() => {
+    axios
+      .get('http://cozshopping.codestates-seb.link/api/v1/products')
+      .then((res) => {
+        setDatas(res.data);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 700);
+      })
+      .catch((err) => {
         setIsLoading(false);
-      }, 700);
-    });
+        setError(true);
+      });
   }, []);
 
   return (
     <Container>
-      <MainList isLoading={isLoading} title="상품 리스트" datas={datas} />
-      <MainList isLoading={isLoading} title="북마크 리스트" datas={datas} />
-      {items && <ToastContainer items={items} />}
-      {modal.isOpen && <Modal {...modal.content} />}
+      {error ? (
+        <FetchError />
+      ) : (
+        <>
+          <MainList isLoading={isLoading} title="상품 리스트" datas={datas} />
+          <MainList isLoading={isLoading} title="북마크 리스트" datas={datas} />
+          {items && <ToastContainer items={items} />}
+          {modal.isOpen && <Modal {...modal.content} />}
+        </>
+      )}
     </Container>
   );
 };
