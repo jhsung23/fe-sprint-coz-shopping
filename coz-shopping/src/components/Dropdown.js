@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import icons from '../lib/icons';
 import { open } from '../modules/menu';
+import { MENU } from '../lib/constants';
 
 const Container = styled.div`
   width: 200px;
@@ -90,7 +91,7 @@ const Dropdown = ({ menuButtonRef }) => {
 
   return (
     <Container ref={menuRef}>
-      <MenuItem>OOO님, 안녕하세요!</MenuItem>
+      <MenuItem>{MENU.GREETING}</MenuItem>
       {datas.map((data) => (
         <NavLink
           key={data.id}

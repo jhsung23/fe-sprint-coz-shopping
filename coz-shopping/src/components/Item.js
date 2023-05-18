@@ -6,6 +6,7 @@ import icons from '../lib/icons';
 import { toggle } from '../modules/bookmark';
 import { alertAsync } from '../modules/toast';
 import { open } from '../modules/modal';
+import { BRAND, CATEGORY, ITEM_TYPE, TOAST } from '../lib/constants';
 
 const Container = styled.div`
   height: 264px;
@@ -47,7 +48,7 @@ const TitleWrapper = styled.div`
   cursor: pointer;
 
   & :nth-child(2) {
-    color: ${(props) => (props.type === 'Product' ? props.theme.colors.purple : 'black')};
+    color: ${(props) => (props.type === ITEM_TYPE.PRODUCT ? props.theme.colors.purple : 'black')};
   }
 `;
 
@@ -55,7 +56,7 @@ const SubtitleWrapper = styled.div`
   margin-top: 3px;
   font-size: 16px;
   font-weight: 400;
-  text-align: ${(props) => (props.type === 'Exhibition' ? 'start' : 'end')};
+  text-align: ${(props) => (props.type === ITEM_TYPE.EXHIBITION ? 'start' : 'end')};
   cursor: pointer;
 `;
 
@@ -83,19 +84,19 @@ const Item = ({
     dispatch(toggle(id));
 
     if (itemsId.includes(id)) {
-      alertAsync(uuid(), 'unbookmark')(dispatch);
+      alertAsync(uuid(), TOAST.DISMISS_ACTION)(dispatch);
     } else {
-      alertAsync(uuid(), 'bookmark')(dispatch);
+      alertAsync(uuid(), TOAST.ALERT_ACTION)(dispatch);
     }
   };
 
-  if (type === 'Product') {
+  if (type === ITEM_TYPE.PRODUCT) {
     titleRight = `${discountPercentage}%`;
     subtitle = Number(price).toLocaleString('ko-KR', { currency: 'KRW' }) + '원';
-  } else if (type === 'Exhibition') {
+  } else if (type === ITEM_TYPE.EXHIBITION) {
     subtitle = sub_title;
-  } else if (type === 'Brand') {
-    titleRight = '관심고객수';
+  } else if (type === ITEM_TYPE.BRAND) {
+    titleRight = BRAND.TITLE_RIGHT;
     subtitle = Number(follower).toLocaleString('ko-KR', { currency: 'KRW' });
     imageUrl = brand_image_url;
   }
@@ -122,7 +123,7 @@ const Item = ({
         >
           <TitleWrapper type={type}>
             <p>
-              {type === 'Category' && '# '}
+              {type === ITEM_TYPE.CATEGORY && CATEGORY.PREFIX}
               {titleLeft}
             </p>
             <p>{titleRight}</p>

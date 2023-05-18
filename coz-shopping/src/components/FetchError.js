@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { ReactComponent as Error } from '../img/error.svg';
+import { FETCH_ERROR_MESSAGE } from '../lib/constants';
 
 const Continaer = styled.div`
   display: flex;
@@ -16,17 +17,14 @@ const ErrorMessage = styled.p`
   text-align: center;
   font-size: 1.1rem;
   line-height: 170%;
+  white-space: pre-line;
 `;
 
 const FetchError = () => {
   return (
     <Continaer>
       <Error width={350} height={350} />
-      <ErrorMessage>
-        이런! 페이지를 불러올 수 없습니다.
-        <br />
-        잠시 후에 다시 시도해 주세요.
-      </ErrorMessage>
+      <ErrorMessage>{FETCH_ERROR_MESSAGE}</ErrorMessage>
     </Continaer>
   );
 };
