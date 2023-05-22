@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { ReactComponent as Nothing } from '../img/notFound.svg';
+import { NOT_FOUND_MESSAGE } from '../lib/constants';
 
 const Container = styled.div`
   display: flex;
@@ -19,7 +20,7 @@ const NotFound = () => {
   return (
     <Container>
       <Nothing width="500px" />
-      <p>존재하지 않는 페이지입니다.</p>
+      <p>{NOT_FOUND_MESSAGE}</p>
     </Container>
   );
 };

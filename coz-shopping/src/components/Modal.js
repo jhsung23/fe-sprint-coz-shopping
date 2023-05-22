@@ -6,6 +6,8 @@ import { v4 as uuid } from 'uuid';
 import icons from '../lib/icons';
 import { toggle } from '../modules/bookmark';
 import { alertAsync } from '../modules/toast';
+import { close } from '../modules/modal';
+import { TOAST } from '../lib/constants';
 
 const ModalLayer = styled.div`
   width: 100vw;
@@ -71,7 +73,7 @@ const Title = styled.span`
   line-height: 1.5px;
 `;
 
-const Modal = ({ titleLeft, id, imageUrl, setIsModalOpen }) => {
+const Modal = ({ id, titleLeft, imageUrl }) => {
   const layerRef = useRef(null);
 
   const { itemsId } = useSelector((state) => state.bookmark);
@@ -81,15 +83,15 @@ const Modal = ({ titleLeft, id, imageUrl, setIsModalOpen }) => {
     dispatch(toggle(id));
 
     if (itemsId.includes(id)) {
-      alertAsync(uuid(), 'unbookmark')(dispatch);
+      alertAsync(uuid(), TOAST.DISMISS_ACTION)(dispatch);
     } else {
-      alertAsync(uuid(), 'bookmark')(dispatch);
+      alertAsync(uuid(), TOAST.ALERT_ACTION)(dispatch);
     }
   };
 
   const closeModal = (e) => {
     if (e.target === layerRef.current) {
-      setIsModalOpen(false);
+      dispatch(close());
     }
   };
 
@@ -99,7 +101,7 @@ const Modal = ({ titleLeft, id, imageUrl, setIsModalOpen }) => {
         <ItemImage src={imageUrl} alt={titleLeft} />
         <CloseButton
           onClick={() => {
-            setIsModalOpen(false);
+            dispatch(close());
           }}
         >
           {icons.close}

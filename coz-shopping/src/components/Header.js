@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Dropdown from './Dropdown';
 import { open } from '../modules/menu';
 import { NavLink } from 'react-router-dom';
+import { APP_NAME, PATH } from '../lib/constants';
 
 const Container = styled.header`
   width: 100vw;
@@ -60,17 +61,17 @@ const Header = () => {
   return (
     <>
       <Container>
-        <NavLink to="/" className="noDecoration">
+        <NavLink to={PATH.MAIN_PAGE} className="noDecoration">
           <LogoWrapper>
             <img src={logo} alt="logo" />
-            <p>COZ Shopping</p>
+            <p>{APP_NAME}</p>
           </LogoWrapper>
         </NavLink>
         <IconWrapper className="menu-button" onClick={openMenu} ref={menuButtonRef}>
           {icons.hamburger()}
         </IconWrapper>
       </Container>
-      {menu.isOpen ? <Dropdown menuButtonRef={menuButtonRef} /> : undefined}
+      {menu.isOpen && <Dropdown menuButtonRef={menuButtonRef} />}
     </>
   );
 };

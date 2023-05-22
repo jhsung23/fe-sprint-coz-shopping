@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { FOOTER } from '../lib/constants';
 
 const Container = styled.footer`
   width: 100vw;
@@ -21,8 +22,10 @@ const Container = styled.footer`
 const Footer = () => {
   return (
     <Container>
-      <span>개인정보 처리방침 │ 이용 약관</span>
-      <span>All rights reserved @ Codestates</span>
+      <span>
+        {FOOTER.PRIVACY_POLICY} │ {FOOTER.TERMS_AND_CONDITIONS}
+      </span>
+      <span>{FOOTER.COPYRIGHT}</span>
     </Container>
   );
 };

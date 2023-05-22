@@ -9,9 +9,13 @@ import Item from '../components/Item';
 import ItemSkeleton from '../components/ItemSkeleton';
 import EmptyList from '../components/EmptyList';
 import ToastContainer from '../components/ToastContainer';
+import Modal from '../components/Modal';
+import FetchError from '../components/FetchError';
+import { MAIN_LIST, MENU } from '../lib/constants';
 
 const LIMIT = 20;
 const SKELETON_COUNT = 16;
+const SERVER_URL = 'http://cozshopping.codestates-seb.link/api/v1/products';
 
 const Container = styled.div`
   display: flex;
@@ -33,19 +37,28 @@ const ListPage = ({ title }) => {
   const [visibleCount, setVisibleCount] = useState(LIMIT);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedType, setSelectedType] = useState('');
+  const [error, setError] = useState(false);
+
   const [ref, inView] = useInView();
 
-  const { itemsId } = useSelector((state) => state.bookmark);
-  const { items } = useSelector((state) => state.toast);
+  const { bookmark } = useSelector((state) => state);
+  const { toast } = useSelector((state) => state);
+  const { modal } = useSelector((state) => state);
 
   const fetchInitialData = () => {
     setIsLoading(true);
-    axios.get('http://cozshopping.codestates-seb.link/api/v1/products').then((res) => {
-      setDatas(res.data);
-      setTimeout(() => {
+    axios
+      .get(SERVER_URL)
+      .then((res) => {
+        setDatas(res.data);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 700);
+      })
+      .catch((err) => {
+        setError(true);
         setIsLoading(false);
-      }, 700);
-    });
+      });
   };
 
   const loadMoreData = useCallback(() => {
@@ -54,14 +67,15 @@ const ListPage = ({ title }) => {
 
   const updateUI = () => {
     const filteredData =
-      title === 'itemList'
+      title === MENU.ITEM_PAGE
         ? datas
             .slice(0, visibleCount)
             .filter((data) => selectedType === '' || data.type === selectedType)
         : datas
             .filter(
               (data) =>
-                (selectedType === '' || data.type === selectedType) && itemsId.includes(data.id)
+                (selectedType === '' || data.type === selectedType) &&
+                bookmark.itemsId.includes(data.id)
             )
             .slice(0, visibleCount);
 
@@ -75,10 +89,10 @@ const ListPage = ({ title }) => {
       );
     }
 
-    return title === 'itemList' ? (
-      <EmptyList listName="item" width={300} height={200} />
+    return title === MENU.ITEM_PAGE ? (
+      <EmptyList listName={MAIN_LIST.ITEM} width={300} height={200} />
     ) : (
-      <EmptyList listName="bookmark" width={200} height={200} />
+      <EmptyList listName={MAIN_LIST.BOOKMARK} width={200} height={200} />
     );
   };
 
@@ -94,18 +108,25 @@ const ListPage = ({ title }) => {
 
   return (
     <Container>
-      <FilterContainer selectedType={selectedType} setSelectedType={setSelectedType} />
-      {isLoading ? (
-        <ItemContainer>
-          {Array.from({ length: SKELETON_COUNT }).map((_, idx) => (
-            <ItemSkeleton key={idx} />
-          ))}
-        </ItemContainer>
+      {error ? (
+        <FetchError />
       ) : (
-        updateUI()
+        <>
+          <FilterContainer selectedType={selectedType} setSelectedType={setSelectedType} />
+          {isLoading ? (
+            <ItemContainer>
+              {Array.from({ length: SKELETON_COUNT }).map((_, idx) => (
+                <ItemSkeleton key={idx} />
+              ))}
+            </ItemContainer>
+          ) : (
+            updateUI()
+          )}
+          <div ref={ref} />
+          {toast.items && <ToastContainer items={toast.items} />}
+          {modal.isOpen && <Modal {...modal.content} />}
+        </>
       )}
-      <div ref={ref} />
-      {items && <ToastContainer items={items} />}
     </Container>
   );
 };

@@ -3,20 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
-import storage from 'redux-persist/lib/storage';
-import thunk from 'redux-thunk';
 
-import menuReducer from './modules/menu';
-import bookmarkReducer from './modules/bookmark';
-import filterReducer from './modules/filter';
-import toastReducer from './modules/toast';
 import GlobalStyle from './components/GlobalStyle';
+import { store, persistor } from './modules/store';
 
 const theme = {
   colors: {
@@ -28,21 +22,6 @@ const theme = {
     white: '#ffffff',
   },
 };
-
-const persistConfig = {
-  key: 'bookmark',
-  storage,
-  whitelist: ['bookmark'],
-};
-const rootReducer = combineReducers({
-  menu: menuReducer,
-  bookmark: bookmarkReducer,
-  filter: filterReducer,
-  toast: toastReducer,
-});
-
-const store = createStore(persistReducer(persistConfig, rootReducer), applyMiddleware(thunk));
-const persistor = persistStore(store);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
