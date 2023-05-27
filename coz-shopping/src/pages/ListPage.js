@@ -12,7 +12,7 @@ import ToastContainer from '../components/ToastContainer';
 import Modal from '../components/Modal';
 import FetchError from '../components/FetchError';
 import { MAIN_LIST, MENU } from '../lib/constants';
-import useAxios from '../hooks/useAxios';
+import useFetch from '../hooks/useFetch';
 
 const LIMIT = 20;
 const SKELETON_COUNT = 16;
@@ -36,7 +36,7 @@ const ItemContainer = styled.div`
 const ListPage = ({ title }) => {
   const [visibleCount, setVisibleCount] = useState(LIMIT);
   const [selectedType, setSelectedType] = useState('');
-  const [isLoading, datas, isError] = useAxios(() => axios.get(SERVER_URL));
+  const [isLoading, datas, isError] = useFetch(() => axios.get(SERVER_URL));
 
   const [ref, inView] = useInView();
 

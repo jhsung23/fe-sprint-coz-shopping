@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-const useAxios = (requestCallback) => {
+const useFetch = (requestCallback) => {
   const [isLoading, setIsLoading] = useState(false);
   const [datas, setDatas] = useState([]);
   const [isError, setIsError] = useState(false);
@@ -28,4 +28,4 @@ const useAxios = (requestCallback) => {
   return [isLoading, datas, isError];
 };
 
-export default useAxios;
+export default useFetch;

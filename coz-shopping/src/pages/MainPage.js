@@ -7,7 +7,7 @@ import ToastContainer from '../components/ToastContainer';
 import Modal from '../components/Modal';
 import FetchError from '../components/FetchError';
 import { MAIN_LIST } from '../lib/constants';
-import useAxios from '../hooks/useAxios';
+import useFetch from '../hooks/useFetch';
 
 const SERVER_URL = 'http://cozshopping.codestates-seb.link/api/v1/products';
 
@@ -20,7 +20,7 @@ const Container = styled.main`
 `;
 
 const MainPage = () => {
-  const [isLoading, datas, isError] = useAxios(() => axios.get(SERVER_URL));
+  const [isLoading, datas, isError] = useFetch(() => axios.get(SERVER_URL));
 
   const { toast } = useSelector((state) => state);
   const { modal } = useSelector((state) => state);
