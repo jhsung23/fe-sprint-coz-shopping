@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 import { useInView } from 'react-intersection-observer';
 import { useSelector } from 'react-redux';
 
@@ -36,7 +35,7 @@ const ItemContainer = styled.div`
 const ListPage = ({ title }) => {
   const [visibleCount, setVisibleCount] = useState(LIMIT);
   const [selectedType, setSelectedType] = useState('');
-  const [isLoading, datas, isError] = useFetch(() => axios.get(SERVER_URL));
+  const [isLoading, datas, isError] = useFetch(SERVER_URL);
 
   const [ref, inView] = useInView();
 

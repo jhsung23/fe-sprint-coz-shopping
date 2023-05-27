@@ -1,13 +1,15 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-const useFetch = (requestCallback) => {
+const useFetch = (url) => {
   const [isLoading, setIsLoading] = useState(false);
   const [datas, setDatas] = useState([]);
   const [isError, setIsError] = useState(false);
 
-  const fetchData = useCallback(() => {
+  useEffect(() => {
     setIsLoading(true);
-    requestCallback()
+    axios
+      .get(url)
       .then((res) => {
         setDatas(res.data);
         setTimeout(() => {
@@ -18,12 +20,7 @@ const useFetch = (requestCallback) => {
         setIsLoading(false);
         setIsError(true);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  }, [url]);
 
   return [isLoading, datas, isError];
 };

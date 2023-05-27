@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 import MainList from '../components/MainList';
@@ -20,7 +19,7 @@ const Container = styled.main`
 `;
 
 const MainPage = () => {
-  const [isLoading, datas, isError] = useFetch(() => axios.get(SERVER_URL));
+  const [isLoading, datas, isError] = useFetch(SERVER_URL);
 
   const { toast } = useSelector((state) => state);
   const { modal } = useSelector((state) => state);
