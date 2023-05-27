@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 import { useInView } from 'react-intersection-observer';
 import { useSelector } from 'react-redux';
 
@@ -12,6 +11,7 @@ import ToastContainer from '../components/ToastContainer';
 import Modal from '../components/Modal';
 import FetchError from '../components/FetchError';
 import { MAIN_LIST, MENU } from '../lib/constants';
+import useFetch from '../hooks/useFetch';
 
 const LIMIT = 20;
 const SKELETON_COUNT = 16;
@@ -33,33 +33,15 @@ const ItemContainer = styled.div`
 `;
 
 const ListPage = ({ title }) => {
-  const [datas, setDatas] = useState([]);
   const [visibleCount, setVisibleCount] = useState(LIMIT);
-  const [isLoading, setIsLoading] = useState(false);
   const [selectedType, setSelectedType] = useState('');
-  const [error, setError] = useState(false);
+  const [isLoading, datas, isError] = useFetch(SERVER_URL);
 
   const [ref, inView] = useInView();
 
   const { bookmark } = useSelector((state) => state);
   const { toast } = useSelector((state) => state);
   const { modal } = useSelector((state) => state);
-
-  const fetchInitialData = () => {
-    setIsLoading(true);
-    axios
-      .get(SERVER_URL)
-      .then((res) => {
-        setDatas(res.data);
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 700);
-      })
-      .catch((err) => {
-        setError(true);
-        setIsLoading(false);
-      });
-  };
 
   const loadMoreData = useCallback(() => {
     setVisibleCount((prevState) => prevState + LIMIT);
@@ -97,10 +79,6 @@ const ListPage = ({ title }) => {
   };
 
   useEffect(() => {
-    fetchInitialData();
-  }, []);
-
-  useEffect(() => {
     if (inView) {
       loadMoreData();
     }
@@ -108,7 +86,7 @@ const ListPage = ({ title }) => {
 
   return (
     <Container>
-      {error ? (
+      {isError ? (
         <FetchError />
       ) : (
         <>
